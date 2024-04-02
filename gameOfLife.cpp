@@ -28,6 +28,11 @@ void GameOfLife::run() {
     }
 }
 
+bool GameOfLife::isWithinGrid(int x, int y) {
+    return (x >= 0 && x < GRID_SIZE && y >= 0 && y < GRID_SIZE);
+}
+
+
 void GameOfLife::placeGrass() {
     grassCells.resize(GRID_SIZE, std::vector<Grass>(GRID_SIZE)); // Изменение размера сетки травы
     for (int i = 0; i < NUM_GRASS; ++i) { // Цикл для размещения травы
@@ -106,19 +111,19 @@ void GameOfLife::placeAnimals() {
 }
 
 void GameOfLife::reproductionHerbivore(int x, int y) {
-    int cnt_baby = rand() % 4;
     int dx[] = { 0, 0, 1, -1, 1, 1, -1, -1 };
     int dy[] = { 1, -1, 0, 0, 1, -1, 1, -1 };
     for (int i = 0; i < 8; i++) {
         int n_x = x + dx[i];
         int n_y = y + dy[i];
-        if (n_x >= 0 && n_x < GRID_SIZE && n_y >= 0 && n_y < GRID_SIZE) {
+        if (isWithinGrid(n_x, n_y)) {
             if (cells[n_x][n_y] == IS_HERBIVORE && herbivoreCells[n_x][n_y].getSex() != herbivoreCells[x][y].getSex() && herbivoreCells[n_x][n_y].possibilityOfReproduction()) {
+                int cnt_baby = rand() % 4;
                 for (int j = 0; j < cnt_baby; j++)
                 {
-                    int birth_x = x + (rand() % 5 - 2);
-                    int birth_y = y + (rand() % 5 - 2);
-                    if (birth_x >= 0 && birth_x < GRID_SIZE && birth_y >= 0 && birth_y < GRID_SIZE && (cells[birth_x][birth_y] == NOT_FILL || cells[birth_x][birth_y] == IS_GRASS)) {
+                    int birth_x = x + (rand() % 3-1);//было (rand() % 5 - 2)
+                    int birth_y = y + (rand() % 3-1);
+                    if (isWithinGrid(birth_x, birth_y) && (cells[birth_x][birth_y] == NOT_FILL || cells[birth_x][birth_y] == IS_GRASS)) {
                         cells[birth_x][birth_y] = IS_HERBIVORE;
                         createHerbivore(birth_x, birth_y);
                     }
@@ -190,8 +195,8 @@ void GameOfLife::reproductionPredator(int x, int y) {
         if (isWithinGrid(n_x, n_y) && cells[n_x][n_y] == IS_PREDATOR && predatorCells[n_x][n_y].getSex() != predatorCells[x][y].getSex() && predatorCells[n_x][n_y].possibilityOfReproduction()) {
             int cnt_baby = rand() % 4;
             for (int j = 0; j < cnt_baby; j++) {
-                int birth_x = x + (rand() % 2);
-                int birth_y = y + (rand() % 2);
+                int birth_x = x + (rand() % 3 - 1);
+                int birth_y = y + (rand() % 3 - 1);
 
                 if (isWithinGrid(birth_x, birth_y) && (cells[birth_x][birth_y] == NOT_FILL || cells[birth_x][birth_y] == IS_GRASS)) {
                     cells[birth_x][birth_y] = IS_PREDATOR;
@@ -202,9 +207,6 @@ void GameOfLife::reproductionPredator(int x, int y) {
     }
 }
 
-bool GameOfLife::isWithinGrid(int x, int y) {
-    return (x >= 0 && x < GRID_SIZE && y >= 0 && y < GRID_SIZE);
-}
 
 
 void GameOfLife::eatingPredator(int x, int y) { //функция, которая позволяет травоядным кушать
