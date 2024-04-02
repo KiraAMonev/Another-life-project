@@ -132,7 +132,7 @@ void GameOfLife::reproductionHerbivore(int x, int y) {
         }
     }
 }
-////////////////////// животное ест траву рядом, не вставая на нее?=======================================================================================================================
+////////////////////// животное ест траву рядом, не вставая на нее???????????????????????????????????????????????????????????????????????????????????????????????????????????????
 void GameOfLife::eatingHerbivore(int x, int y) { //функция, которая позволяет травоядным кушать
     if (herbivoreCells[x][y].isHungry(HERBIVORE_HUNGRY_SATIETY) == true) { // проверяет, голодно ли животное в этой клетке
         int dx[] = { 0, 0, 1, 1, 1, -1, -1, -1 };
@@ -153,7 +153,6 @@ void GameOfLife::eatingHerbivore(int x, int y) { //функция, которая позволяет тр
         }
     }
 }
-
 
 void GameOfLife::createPredator(int x, int y) {
     predatorCells[x][y].setLifeSpan(PREDATOR_LIFE_SPAN);
@@ -208,7 +207,7 @@ void GameOfLife::reproductionPredator(int x, int y) {
 }
 
 
-
+////////////////////// хищник ест животного рядом, не вставая на него???????????????????????????????????????????????????????????????????????????????????????????????????????????????
 void GameOfLife::eatingPredator(int x, int y) { //функция, которая позволяет травоядным кушать
     if (predatorCells[x][y].isHungry(PREDATOR_HUNGRY_SATIETY) == true) { // проверяет, голодно ли животное в этой клетке
         int dx[] = { 0, 0, 1, 1, 1, -1, -1, -1 };
@@ -216,7 +215,7 @@ void GameOfLife::eatingPredator(int x, int y) { //функция, которая позволяет тра
         for (int i = 0; i < 8; i++) {
             int eating_x = x + dx[i];
             int eating_y = y + dy[i];
-            if (eating_x > 0 && eating_x < GRID_SIZE && eating_y > 0 && eating_y < GRID_SIZE) {
+            if (isWithinGrid(eating_x, eating_y)) {
                 if (herbivoreCells[eating_x][eating_y].getLifeSpan() != 0) { //проверяет, есть ли вокруг травинка. Если да-съедаем её
                     int new_satiety = predatorCells[x][y].getSatiety() + ANIMAL_RESTORING_SATIETY;
                     predatorCells[x][y].setSatiety(new_satiety);
@@ -242,9 +241,9 @@ void GameOfLife::update() {
                     for (int i = 0; i < 10; ++i) {
                         int new_x = x + (rand() % 5 - 2);
                         int new_y = y + (rand() % 5 - 2);
-                        if (new_x >= 0 && new_x < GRID_SIZE && new_y >= 0 && new_y < GRID_SIZE && cells[new_x][new_y] == NOT_FILL) {
+                        if (isWithinGrid(new_x, new_y) && cells[new_x][new_y] == NOT_FILL) {
                             cells[new_x][new_y] = IS_GRASS;
-                            grassCells[new_x][new_y].setLifeSpan(GRASS_LIFE_SPAN);
+                            grassCells[new_x][new_y].setLifeSpan(GRASS_LIFE_SPAN); 
                         }
                     }
                 }
