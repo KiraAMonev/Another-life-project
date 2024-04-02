@@ -74,7 +74,7 @@ private:
     void eatingPredator(int x, int y);
 
     void placeAnimals();
-
+    bool isWithinGrid(int x, int y);
 
     void update();
     void processEvents();
