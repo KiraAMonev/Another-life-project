@@ -59,25 +59,51 @@ void GameOfLife::placeHerbivore() {
 }
 */
 
+//void GameOfLife::placeAnimals() {
+//    herbivoreCells.resize(GRID_SIZE, std::vector<Animal>(GRID_SIZE));
+//    predatorCells.resize(GRID_SIZE, std::vector<Animal>(GRID_SIZE));
+//    for (int i = 0; i < NUM_HERBIVORE+NUM_PREDATOR; ++i) { // Цикл начального размещения травоядных
+//        int x = rand() % GRID_SIZE;
+//        int y = rand() % GRID_SIZE;
+//        if (cells[x][y] == NOT_FILL || cells[x][y] == IS_GRASS && i < NUM_HERBIVORE) { // Если в клетке ничего нет, то занимаем её травоядным
+//            grassCells[x][y].setLifeSpan(0);
+//            cells[x][y] = IS_HERBIVORE; // Ставим флаг, что она занята травоядным
+//            createHerbivore(x, y);
+//        }
+//        else if (cells[x][y] == NOT_FILL || cells[x][y] == IS_GRASS && i >= NUM_HERBIVORE) {
+//            grassCells[x][y].setLifeSpan(0);
+//            cells[x][y] = IS_PREDATOR; // Ставим флаг, что она занята травоядным
+//            createPredator(x, y);
+//        }
+//    }
+//}
+
 void GameOfLife::placeAnimals() {
     herbivoreCells.resize(GRID_SIZE, std::vector<Animal>(GRID_SIZE));
     predatorCells.resize(GRID_SIZE, std::vector<Animal>(GRID_SIZE));
-    for (int i = 0; i < NUM_HERBIVORE+NUM_PREDATOR; ++i) { // Цикл начального размещения травоядных
+    for (int i = 0; i < NUM_HERBIVORE + NUM_PREDATOR; ++i) { // Цикл начального размещения травоядных
         int x = rand() % GRID_SIZE;
         int y = rand() % GRID_SIZE;
-        if (cells[x][y] == NOT_FILL || cells[x][y] == IS_GRASS && i < NUM_HERBIVORE) { // Если в клетке ничего нет, то занимаем её травоядным
+        while (cells[x][y] == IS_HERBIVORE || cells[x][y] == IS_PREDATOR)
+        {
+            x = rand() % GRID_SIZE;
+            y = rand() % GRID_SIZE;
+        }
+
+        if (i < NUM_HERBIVORE)
+        {
             grassCells[x][y].setLifeSpan(0);
             cells[x][y] = IS_HERBIVORE; // Ставим флаг, что она занята травоядным
             createHerbivore(x, y);
         }
-        else if (cells[x][y] == NOT_FILL || cells[x][y] == IS_GRASS && i >= NUM_HERBIVORE) {
+        else
+        {
             grassCells[x][y].setLifeSpan(0);
             cells[x][y] = IS_PREDATOR; // Ставим флаг, что она занята травоядным
             createPredator(x, y);
         }
     }
 }
-
 
 void GameOfLife::reproductionHerbivore(int x, int y) {
     int cnt_baby = rand() % 4;
