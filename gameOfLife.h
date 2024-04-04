@@ -24,21 +24,21 @@ const int IS_HERBIVORE = 2;
 const int IS_PREDATOR = 3;
 
 const int NUM_GRASS = 300; // Количество травы, которая будет размещена в начале
-const int GRASS_LIFE_SPAN = 14; // Продолжительность жизни травы в циклах
+const int GRASS_LIFE_SPAN = 7; // Продолжительность жизни травы в циклах
 const int MAX_SIZE = WINDOW_WIDTH * WINDOW_HEIGHT;
 
 const int MALE = 0;
 const int FEMALE = 1;
 const int MAX_CNT_MATING = 6;
 
-const int NUM_HERBIVORE = 150; //количество травоядных
+const int NUM_HERBIVORE = 50; //количество травоядных
 const int HERBIVORES_LIFE_SPAN = 20; //продолжительность жизни травоядных
 const int HERBIVORE_NORMAL_SATIETY = 20; //нормальное количество сытости
-const int HERBIVORE_HUNGRY_SATIETY = 8; //сытость, когда нужно есть траву
+const int HERBIVORE_HUNGRY_SATIETY = 12; //сытость, когда нужно есть траву
 const int HERBIVORE_ADULT_AGE = 8; //"зрелость", то есть возраст, когда можно шпили-вили
 const int HERBIVORE_REDUCING_SATIETY = 1; //сколько очков сытости падает за день
 
-const int NUM_PREDATOR = 100; // Количество хищников
+const int NUM_PREDATOR = 20; // Количество хищников
 const int PREDATOR_LIFE_SPAN = 30; //продолжительность жизни у хищников
 const int PREDATOR_NORMAL_SATIETY = 20; //нормальное количество сытости у хищников
 const int PREDATOR_HUNGRY_SATIETY = 8; //сытость, когда нужно есть

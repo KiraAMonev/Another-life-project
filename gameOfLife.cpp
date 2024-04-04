@@ -242,7 +242,7 @@ void GameOfLife::update() {
                 else {
                     int d_x = 0;
                     int d_y = 0;
-                    std::pair<int, int> d = find_food(predatorCells, IS_PREDATOR, cells, x, y, IS_PREDATOR, d_x, d_y);
+                    std::pair<int, int> d = find_food(predatorCells, IS_PREDATOR, cells, x, y, IS_HERBIVORE, d_x, d_y);
                     d_x = d.first;
                     d_y = d.second;
                     //std::cout << d_x << " " << d_y << "\n";
