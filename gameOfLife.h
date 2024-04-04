@@ -29,7 +29,7 @@ const int MAX_SIZE = WINDOW_WIDTH * WINDOW_HEIGHT;
 
 const int MALE = 0;
 const int FEMALE = 1;
-const int MAX_CNT_MATING = 3;
+const int MAX_CNT_MATING = 6;
 
 const int NUM_HERBIVORE = 300; //количество травоядных
 const int HERBIVORES_LIFE_SPAN = 20; //продолжительность жизни травоядных

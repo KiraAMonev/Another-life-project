@@ -18,7 +18,7 @@ void GameOfLife::run() {
     while (window.isOpen()) { // Основной игровой цикл
         elapsed += clock.restart(); // Перезапуск часов и добавление прошедшего времени
         processEvents(); // Обработка событий
-        if (elapsed.asMilliseconds() >= 1000) { // Если прошла одна секунда
+        if (elapsed.asMilliseconds() >= 700) { // Если прошла одна секунда
             update(); // Обновление состояния игры
             elapsed = sf::Time::Zero; // Сброс прошедшего времени
             ++cycleCount; // Увеличение счетчика циклов
@@ -127,28 +127,6 @@ void GameOfLife::createPredator(int x, int y) {
     predatorCells[x][y].setSex();
     predatorCells[x][y].setCntMating();
 }
-
-//void GameOfLife::reproductionPredator(int x, int y) {
-//    int cnt_baby = rand() % 4;
-//    int dx[] = { 0, 0, 1, -1, 1, 1, -1, -1 };
-//    int dy[] = { 1, -1, 0, 0, 1, -1, 1, -1 };
-//    for (int i = 0; i < 8; i++) {
-//        int n_x = x + dx[i];
-//        int n_y = y + dy[i];
-//        if (n_x >= 0 && n_x < GRID_SIZE && n_y >= 0 && n_y < GRID_SIZE) {
-//            if (cells[n_x][n_y] == IS_PREDATOR && predatorCells[n_x][n_y].getSex() != predatorCells[x][y].getSex() && predatorCells[n_x][n_y].possibilityOfReproduction()) {
-//                for (int j = 0; j < cnt_baby; j++) {
-//                    int birth_x = x + (rand() % 5 - 2);
-//                    int birth_y = y + (rand() % 5 - 2);
-//                    if (birth_x >= 0 && birth_x < GRID_SIZE && birth_y >= 0 && birth_y < GRID_SIZE && (cells[birth_x][birth_y] == NOT_FILL || cells[birth_x][birth_y] == IS_GRASS)) {
-//                        cells[birth_x][birth_y] = IS_PREDATOR;
-//                        createPredator(birth_x, birth_y);
-//                    }
-//                }
-//            }
-//        }
-//    }
-//}
 
 void GameOfLife::reproductionPredator(int x, int y) {
     const int num_directions = 8;

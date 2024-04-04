@@ -27,7 +27,7 @@ int Animal::getSex() const { //получение пола
 }
 
 bool Animal::isAlive() const { //проверка на жизнь
-	if (lifeSpan > 0)
+	if (lifeSpan > 0 && satiety > 0)
 		return true;
 	else
 		return false;
