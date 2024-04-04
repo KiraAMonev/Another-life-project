@@ -27,7 +27,7 @@ int Animal::getSex() const { //получение пола
 }
 
 bool Animal::isAlive() const { //проверка на жизнь
-	if (lifeSpan > 0 && lifeSpan+satiety > 0)
+	if (lifeSpan > 0)
 		return true;
 	else
 		return false;
@@ -35,7 +35,7 @@ bool Animal::isAlive() const { //проверка на жизнь
 
 bool Animal::possibilityOfReproduction() const
 {
-	if (lifeSpan <= HERBIVORE_ADULT_AGE)
+	if (lifeSpan >= HERBIVORE_ADULT_AGE)
 		return true;
 	return false;
 }

@@ -34,7 +34,7 @@ const int HERBIVORE_HUNGRY_SATIETY = 8; //сытость, когда нужно есть траву
 const int HERBIVORE_ADULT_AGE = 8; //"зрелость", то есть возраст, когда можно шпили-вили
 const int HERBIVORE_REDUCING_SATIETY = 1; //сколько очков сытости падает за день
 
-const int NUM_PREDATOR = 150; //  оличество хищников
+const int NUM_PREDATOR = 200; //  оличество хищников
 const int PREDATOR_LIFE_SPAN = 30; //продолжительность жизни у хищников
 const int PREDATOR_NORMAL_SATIETY = 15; //нормальное количество сытости у хищников
 const int PREDATOR_HUNGRY_SATIETY = 8; //сытость, когда нужно есть

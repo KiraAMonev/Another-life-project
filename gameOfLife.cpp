@@ -18,7 +18,7 @@ void GameOfLife::run() {
     while (window.isOpen()) { // Основной игровой цикл
         elapsed += clock.restart(); // Перезапуск часов и добавление прошедшего времени
         processEvents(); // Обработка событий
-        if (elapsed.asMilliseconds() >= 700) { // Если прошла одна секунда
+        if (elapsed.asMilliseconds() >=700) { // Если прошла одна секунда
             update(); // Обновление состояния игры
             elapsed = sf::Time::Zero; // Сброс прошедшего времени
             ++cycleCount; // Увеличение счетчика циклов
@@ -118,7 +118,7 @@ void GameOfLife::reproductionHerbivore(int x, int y) {
         int n_y = y + dy[i];
         if (isWithinGrid(n_x, n_y)) {
             if (cells[n_x][n_y] == IS_HERBIVORE && herbivoreCells[n_x][n_y].getSex() != herbivoreCells[x][y].getSex() && herbivoreCells[n_x][n_y].possibilityOfReproduction()) {
-                int cnt_baby = rand() % 4;
+                int cnt_baby = rand() % 2;
                 for (int j = 0; j < cnt_baby; j++)
                 {
                     int birth_x = x + (rand() % 3-1);//было (rand() % 5 - 2)
@@ -192,7 +192,7 @@ void GameOfLife::reproductionPredator(int x, int y) {
         int n_y = y + dy[i];
 
         if (isWithinGrid(n_x, n_y) && cells[n_x][n_y] == IS_PREDATOR && predatorCells[n_x][n_y].getSex() != predatorCells[x][y].getSex() && predatorCells[n_x][n_y].possibilityOfReproduction()) {
-            int cnt_baby = rand() % 4;
+            int cnt_baby = rand() % 2;
             for (int j = 0; j < cnt_baby; j++) {
                 int birth_x = x + (rand() % 3 - 1);
                 int birth_y = y + (rand() % 3 - 1);
