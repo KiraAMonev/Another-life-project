@@ -6,7 +6,6 @@ GameOfLife::GameOfLife() {
     srand(time(nullptr)); // Инициализация генератора случайных чисел
 
     placeGrass(); // Размещение начальной травы
-    //placeHerbivore(); // Размещение начальных травоядных
     placeAnimals();
     placeText(font, text);
 }
@@ -82,7 +81,7 @@ void GameOfLife::reproductionHerbivore(int x, int y) {
         int n_y = y + dy[i];
         if (isWithinGrid(n_x, n_y)) {
             if (cells[n_x][n_y] == IS_HERBIVORE && herbivoreCells[n_x][n_y].getSex() != herbivoreCells[x][y].getSex() && herbivoreCells[n_x][n_y].possibilityOfReproduction()) {
-                int cnt_baby = rand() % 2;
+                int cnt_baby = rand() % 4;
                 for (int j = 0; j < cnt_baby; j++) {
                     int birth_x = x + (rand() % 3 - 1);//было (rand() % 5 - 2)
                     int birth_y = y + (rand() % 3 - 1);
@@ -110,7 +109,6 @@ void GameOfLife::eatingHerbivore(int x, int y) { //функция, которая позволяет тр
                     grassCells[eating_x][eating_y].setLifeSpan(0);
                     if (cells[eating_x][eating_y] == IS_GRASS) //если в отображаемой клетке была трава, то очищаем клетку
                         cells[eating_x][eating_y] = NOT_FILL;
-                    eatingHerbivore(x, y); //рекурсивно запустим функцию, которая будет выполняться пока животное голодно
                 }
             }
         }
@@ -119,7 +117,6 @@ void GameOfLife::eatingHerbivore(int x, int y) { //функция, которая позволяет тр
 
 void GameOfLife::createPredator(int x, int y) {
     predatorCells[x][y].setLifeSpan(PREDATOR_LIFE_SPAN);
-    //std::cout << predatorCells[x][y].getLifeSpan();
     predatorCells[x][y].setSatiety(PREDATOR_NORMAL_SATIETY);
     predatorCells[x][y].setSex();
     predatorCells[x][y].setCntMating();
@@ -135,7 +132,7 @@ void GameOfLife::reproductionPredator(int x, int y) {
         int n_y = y + dy[i];
 
         if (isWithinGrid(n_x, n_y) && cells[n_x][n_y] == IS_PREDATOR && predatorCells[n_x][n_y].getSex() != predatorCells[x][y].getSex() && predatorCells[n_x][n_y].possibilityOfReproduction()) {
-            int cnt_baby = rand() % 2;
+            int cnt_baby = rand() % 5;
             for (int j = 0; j < cnt_baby; j++) {
                 int birth_x = x + (rand() % 3 - 1);
                 int birth_y = y + (rand() % 3 - 1);
@@ -165,7 +162,6 @@ void GameOfLife::eatingPredator(int x, int y) { //функция, которая позволяет тра
                     herbivoreCells[eating_x][eating_y].setLifeSpan(0);
                     if (cells[eating_x][eating_y] == IS_HERBIVORE) //если в отображаемой клетке была трава, то очищаем клетку
                         cells[eating_x][eating_y] = NOT_FILL;
-                    eatingPredator(x, y); //рекурсивно запустим функцию, которая будет выполняться пока животное голодно
                 }
             }
         }
@@ -193,7 +189,6 @@ void GameOfLife::update() {
             }
             else if (cells[x][y] == IS_HERBIVORE) {
                 herbivoreCells[x][y].decreaseLifeSpan();
-                //std::cout << predatorCells[x][y].getLifeSpan() << "\n";
                 herbivoreCells[x][y].decreaseSatiety(HERBIVORE_REDUCING_SATIETY);
                 if (!herbivoreCells[x][y].isAlive()) {
                     cells[x][y] = NOT_FILL;
@@ -211,8 +206,6 @@ void GameOfLife::update() {
                         herbivoreCells[x + d_x][y + d_y] = herbivoreCells[x][y];
                     }
                     if (herbivoreCells[x][y].possibilityOfReproduction() && herbivoreCells[x][y].getSex() == FEMALE && herbivoreCells[x][y].getCntMating() <= MAX_CNT_MATING) {
-
-
                         int d_x = 0;
                         int d_y = 0;
                         std::pair<int, int> d = bfs(herbivoreCells, IS_HERBIVORE, cells, x, y, herbivoreCells[x][y].getSex(), d_x, d_y);
@@ -234,7 +227,6 @@ void GameOfLife::update() {
             }
             else if (cells[x][y] == IS_PREDATOR) {
                 predatorCells[x][y].decreaseLifeSpan();
-                //std::cout << predatorCells[x][y].getLifeSpan() << "\n";
                 predatorCells[x][y].decreaseSatiety(PREDATOR_REDUCING_SATIETY);
                 if (!predatorCells[x][y].isAlive()) {
                     cells[x][y] = NOT_FILL;
@@ -269,16 +261,7 @@ void GameOfLife::update() {
                             predatorCells[x][y].increaseMating();
                         }
 
-                    }/*
-                    else {
-                        int d_x = randomDirection();//Здесь мы просто выбираем случайное направление для движеняи и задаем это движение через перезаписывыание в новые клетки текущего живтного
-                        int d_y = randomDirection();
-                        if (d_x + x < GRID_SIZE && d_x + x>0 && d_y + y < GRID_SIZE && d_y + y>0 && cells[x + d_x][y + d_y] != IS_PREDATOR) {
-                            cells[x + d_x][y + d_y] = IS_PREDATOR;
-                            cells[x][y] = NOT_FILL;
-                            predatorCells[x + d_x][y + d_y] = predatorCells[x][y];
-                        }
-                    }*/
+                    }
                     eatingPredator(x, y);
                 }
             }

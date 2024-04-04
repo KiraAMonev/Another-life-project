@@ -15,7 +15,7 @@
 
 const int WINDOW_WIDTH = 800; // Ширина игрового окна
 const int WINDOW_HEIGHT = 800; // Высота игрового окна
-const int CELL_SIZE = 14; // Размер каждой ячейки в сетке
+const int CELL_SIZE = 15; // Размер каждой ячейки в сетке
 const int GRID_SIZE = WINDOW_WIDTH / CELL_SIZE; // Размер сетки на основе ширины окна и размера ячейки
 
 const int NOT_FILL = 0;
@@ -31,21 +31,21 @@ const int MALE = 0;
 const int FEMALE = 1;
 const int MAX_CNT_MATING = 6;
 
-const int NUM_HERBIVORE = 50; //количество травоядных
+const int NUM_HERBIVORE = 130; //количество травоядных
 const int HERBIVORES_LIFE_SPAN = 20; //продолжительность жизни травоядных
-const int HERBIVORE_NORMAL_SATIETY = 20; //нормальное количество сытости
-const int HERBIVORE_HUNGRY_SATIETY = 12; //сытость, когда нужно есть траву
+const int HERBIVORE_NORMAL_SATIETY = 10; //нормальное количество сытости
+const int HERBIVORE_HUNGRY_SATIETY = 10; //сытость, когда нужно есть траву
 const int HERBIVORE_ADULT_AGE = 8; //"зрелость", то есть возраст, когда можно шпили-вили
 const int HERBIVORE_REDUCING_SATIETY = 1; //сколько очков сытости падает за день
 
-const int NUM_PREDATOR = 20; // Количество хищников
+const int NUM_PREDATOR = 30; // Количество хищников
 const int PREDATOR_LIFE_SPAN = 30; //продолжительность жизни у хищников
 const int PREDATOR_NORMAL_SATIETY = 20; //нормальное количество сытости у хищников
-const int PREDATOR_HUNGRY_SATIETY = 8; //сытость, когда нужно есть
+const int PREDATOR_HUNGRY_SATIETY = 14; //сытость, когда нужно есть
 const int PREDATOR_ADULT_AGE = 8; //"зрелость", то есть возраст, когда можно шпили-вили
 const int PREDATOR_REDUCING_SATIETY = 1; //сколько очков сытости падает за день
 
-const int GRASS_RESTORING_SATIETY = 1; //сколько восстанавливает травинка
+const int GRASS_RESTORING_SATIETY = 2; //сколько восстанавливает травинка
 const int ANIMAL_RESTORING_SATIETY = 6; //сколько восстанавливает поедание животного
 
 
