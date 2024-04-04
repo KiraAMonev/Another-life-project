@@ -255,7 +255,7 @@ void GameOfLife::update() {
                     cells[x][y] = NOT_FILL;
                 }
                 else {
-                    if (herbivoreCells[x][y].possibilityOfReproduction()) {
+                    if (herbivoreCells[x][y].possibilityOfReproduction() && herbivoreCells[x][y].getSex()==FEMALE) {
                         int d_x = 0;
                         int d_y = 0;
                         std:: pair<int, int> d = bfs(herbivoreCells, cells, x, y, herbivoreCells[x][y].getSex(), d_x, d_y);
@@ -288,7 +288,7 @@ void GameOfLife::update() {
                     cells[x][y] = NOT_FILL;
                 }
                 else {
-                    if (predatorCells[x][y].possibilityOfReproduction()) {
+                    if (predatorCells[x][y].possibilityOfReproduction() && predatorCells[x][y].getSex()==FEMALE) {
                         int d_x = 0;
                         int d_y = 0;
                         std::pair<int, int> d = bfs(predatorCells, cells, x, y, predatorCells[x][y].getSex(), d_x, d_y);

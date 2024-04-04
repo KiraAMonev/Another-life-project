@@ -27,6 +27,8 @@ const int NUM_GRASS = 300; // Количество травы, которая будет размещена в начале
 const int GRASS_LIFE_SPAN = 5; // Продолжительность жизни травы в циклах
 const int MAX_SIZE = WINDOW_WIDTH * WINDOW_HEIGHT;
 
+const int MALE = 0;
+const int FEMALE = 1;
 const int NUM_HERBIVORE = 200; //количество травоядных
 const int HERBIVORES_LIFE_SPAN = 20; //продолжительность жизни травоядных
 const int HERBIVORE_NORMAL_SATIETY = 10; //нормальное количество сытости
