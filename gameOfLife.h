@@ -85,7 +85,7 @@ private:
     void render();
     void placeText(sf::Font& font, sf::Text& text);
     void updateText(int cycleCount);
-    std::pair<int, int> bfs(std::vector<std::vector<Animal>> herbivoreCells, std::vector<std::vector<int>> grid, int startX, int startY, int curSex, int& dir_x, int& dir_y);
+    std::pair<int, int> bfs(std::vector<std::vector<Animal>> herbivoreCells,int typeOfAnimal, std::vector<std::vector<int>> grid, int startX, int startY, int curSex, int& dir_x, int& dir_y);
     int randomDirection(); 
 };
 

@@ -18,7 +18,7 @@ void GameOfLife::run() {
     while (window.isOpen()) { // Основной игровой цикл
         elapsed += clock.restart(); // Перезапуск часов и добавление прошедшего времени
         processEvents(); // Обработка событий
-        if (elapsed.asMilliseconds() >=700) { // Если прошла одна секунда
+        if (elapsed.asMilliseconds() >= 1000) { // Если прошла одна секунда
             update(); // Обновление состояния игры
             elapsed = sf::Time::Zero; // Сброс прошедшего времени
             ++cycleCount; // Увеличение счетчика циклов
@@ -226,7 +226,7 @@ void GameOfLife::update() {
                     if (herbivoreCells[x][y].possibilityOfReproduction() && herbivoreCells[x][y].getSex()==FEMALE && herbivoreCells[x][y].getCntMating()<=MAX_CNT_MATING) {
                         int d_x = 0;
                         int d_y = 0;
-                        std:: pair<int, int> d = bfs(herbivoreCells, cells, x, y, herbivoreCells[x][y].getSex(), d_x, d_y);
+                        std:: pair<int, int> d = bfs(herbivoreCells, IS_HERBIVORE, cells, x, y, herbivoreCells[x][y].getSex(), d_x, d_y);
                         d_x = d.first;
                         d_y = d.second;
                         if (d_x + x < GRID_SIZE && d_x + x>0 && d_y + y < GRID_SIZE && d_y + y>0 && cells[x + d_x][y + d_y] != IS_HERBIVORE) {
@@ -260,7 +260,7 @@ void GameOfLife::update() {
                     if (predatorCells[x][y].possibilityOfReproduction() && predatorCells[x][y].getSex()==FEMALE && predatorCells[x][y].getCntMating()<=MAX_CNT_MATING) {
                         int d_x = 0;
                         int d_y = 0;
-                        std::pair<int, int> d = bfs(predatorCells, cells, x, y, predatorCells[x][y].getSex(), d_x, d_y);
+                        std::pair<int, int> d = bfs(predatorCells, IS_PREDATOR,cells, x, y, predatorCells[x][y].getSex(), d_x, d_y);
                         d_x = d.first;
                         d_y = d.second;
                         if (d_x + x < GRID_SIZE && d_x + x>0 && d_y + y < GRID_SIZE && d_y + y>0 && cells[x + d_x][y + d_y] != IS_PREDATOR) {
@@ -346,7 +346,7 @@ bool isValid(int x, int y, int rows, int cols) {
 }
 
 // Функция для выполнения поиска в ширину
-std::pair<int, int> GameOfLife::bfs(std::vector<std::vector<Animal>> animalCells, std::vector<std::vector<int>> grid, int startX, int startY, int curSex,int & dir_x,int & dir_y) {
+std::pair<int, int> GameOfLife::bfs(std::vector<std::vector<Animal>> animalCells, int typeOfAnimal, std::vector<std::vector<int>> grid, int startX, int startY, int curSex,int & dir_x,int & dir_y) {
     int rows = grid.size();
     int cols = grid[0].size();
 
@@ -381,7 +381,7 @@ std::pair<int, int> GameOfLife::bfs(std::vector<std::vector<Animal>> animalCells
             // Проверяем, что новая клетка находится в пределах поля и не посещалась
             if (isValid(newX, newY, rows, cols) && !visited[newX][newY] && grid[newX][newY] == 0) {
                 // Добавляем новую клетку в очередь и отмечаем её как посещённую
-                if (grid[newX][newY] == IS_HERBIVORE) {
+                if (grid[newX][newY] == typeOfAnimal) {
                     if (animalCells[newX][newY].getSex() != curSex) {
                         if (startX - newX > 0) {
                             dir_x = -1;
