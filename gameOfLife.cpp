@@ -18,7 +18,7 @@ void GameOfLife::run() {
     while (window.isOpen()) { // Основной игровой цикл
         elapsed += clock.restart(); // Перезапуск часов и добавление прошедшего времени
         processEvents(); // Обработка событий
-        if (elapsed.asMilliseconds() >= 700) { // Если прошла одна секунда
+        if (elapsed.asMilliseconds() >= 1000) { // Если прошла одна секунда
             update(); // Обновление состояния игры
             elapsed = sf::Time::Zero; // Сброс прошедшего времени
             ++cycleCount; // Увеличение счетчика циклов
@@ -56,20 +56,17 @@ void GameOfLife::placeAnimals() {
     for (int i = 0; i < NUM_HERBIVORE + NUM_PREDATOR; ++i) { // Цикл начального размещения травоядных
         int x = rand() % GRID_SIZE;
         int y = rand() % GRID_SIZE;
-        while (cells[x][y] == IS_HERBIVORE || cells[x][y] == IS_PREDATOR)
-        {
+        while (cells[x][y] == IS_HERBIVORE || cells[x][y] == IS_PREDATOR) {
             x = rand() % GRID_SIZE;
             y = rand() % GRID_SIZE;
         }
 
-        if (i < NUM_HERBIVORE)
-        {
+        if (i < NUM_HERBIVORE) {
             grassCells[x][y].setLifeSpan(0);
             cells[x][y] = IS_HERBIVORE; // Ставим флаг, что она занята травоядным
             createHerbivore(x, y);
         }
-        else
-        {
+        else {
             grassCells[x][y].setLifeSpan(0);
             cells[x][y] = IS_PREDATOR; // Ставим флаг, что она занята травоядным
             createPredator(x, y);
@@ -86,10 +83,9 @@ void GameOfLife::reproductionHerbivore(int x, int y) {
         if (isWithinGrid(n_x, n_y)) {
             if (cells[n_x][n_y] == IS_HERBIVORE && herbivoreCells[n_x][n_y].getSex() != herbivoreCells[x][y].getSex() && herbivoreCells[n_x][n_y].possibilityOfReproduction()) {
                 int cnt_baby = rand() % 2;
-                for (int j = 0; j < cnt_baby; j++)
-                {
-                    int birth_x = x + (rand() % 3-1);//было (rand() % 5 - 2)
-                    int birth_y = y + (rand() % 3-1);
+                for (int j = 0; j < cnt_baby; j++) {
+                    int birth_x = x + (rand() % 3 - 1);//было (rand() % 5 - 2)
+                    int birth_y = y + (rand() % 3 - 1);
                     if (isWithinGrid(birth_x, birth_y) && (cells[birth_x][birth_y] == NOT_FILL || cells[birth_x][birth_y] == IS_GRASS)) {
                         cells[birth_x][birth_y] = IS_HERBIVORE;
                         createHerbivore(birth_x, birth_y);
@@ -123,6 +119,7 @@ void GameOfLife::eatingHerbivore(int x, int y) { //функция, которая позволяет тр
 
 void GameOfLife::createPredator(int x, int y) {
     predatorCells[x][y].setLifeSpan(PREDATOR_LIFE_SPAN);
+    //std::cout << predatorCells[x][y].getLifeSpan();
     predatorCells[x][y].setSatiety(PREDATOR_NORMAL_SATIETY);
     predatorCells[x][y].setSex();
     predatorCells[x][y].setCntMating();
@@ -189,7 +186,7 @@ void GameOfLife::update() {
                         int new_y = y + (rand() % 5 - 2);
                         if (isWithinGrid(new_x, new_y) && cells[new_x][new_y] == NOT_FILL) {
                             cells[new_x][new_y] = IS_GRASS;
-                            grassCells[new_x][new_y].setLifeSpan(GRASS_LIFE_SPAN); 
+                            grassCells[new_x][new_y].setLifeSpan(GRASS_LIFE_SPAN);
                         }
                     }
                 }
@@ -201,17 +198,18 @@ void GameOfLife::update() {
                     cells[x][y] = NOT_FILL;
                 }
                 else {
-                    if (herbivoreCells[x][y].possibilityOfReproduction() && herbivoreCells[x][y].getSex()==FEMALE && herbivoreCells[x][y].getCntMating()<=MAX_CNT_MATING) {
+                    if (herbivoreCells[x][y].possibilityOfReproduction() && herbivoreCells[x][y].getSex() == FEMALE && herbivoreCells[x][y].getCntMating() <= MAX_CNT_MATING) {
                         int d_x = 0;
                         int d_y = 0;
-                        std:: pair<int, int> d = bfs(herbivoreCells, IS_HERBIVORE, cells, x, y, herbivoreCells[x][y].getSex(), d_x, d_y);
+                        std::pair<int, int> d = bfs(herbivoreCells, IS_HERBIVORE, cells, x, y, herbivoreCells[x][y].getSex(), d_x, d_y);
                         d_x = d.first;
                         d_y = d.second;
                         if (d_x + x < GRID_SIZE && d_x + x>0 && d_y + y < GRID_SIZE && d_y + y>0 && cells[x + d_x][y + d_y] != IS_HERBIVORE) {
                             cells[x + d_x][y + d_y] = IS_HERBIVORE;
                             cells[x][y] = NOT_FILL;
                             herbivoreCells[x + d_x][y + d_y] = herbivoreCells[x][y];
-                        } else if(cells[x + d_x][y + d_y] == IS_HERBIVORE) { 
+                        }
+                        else if (cells[x + d_x][y + d_y] == IS_HERBIVORE) {
                             reproductionHerbivore(x, y);
                             herbivoreCells[x][y].increaseMating();
                         }
@@ -230,15 +228,29 @@ void GameOfLife::update() {
             }
             else if (cells[x][y] == IS_PREDATOR) {
                 predatorCells[x][y].decreaseLifeSpan();
+                //std::cout << predatorCells[x][y].getLifeSpan() << "\n";
                 predatorCells[x][y].decreaseSatiety(PREDATOR_REDUCING_SATIETY);
                 if (!predatorCells[x][y].isAlive()) {
                     cells[x][y] = NOT_FILL;
                 }
                 else {
-                    if (predatorCells[x][y].possibilityOfReproduction() && predatorCells[x][y].getSex()==FEMALE && predatorCells[x][y].getCntMating()<=MAX_CNT_MATING) {
+                    int d_x = 0;
+                    int d_y = 0;
+                    std::pair<int, int> d = find_food(predatorCells, IS_PREDATOR, cells, x, y, predatorCells[x][y].getSex(), d_x, d_y);
+                    d_x = d.first;
+                    d_y = d.second;
+                    //std::cout << d_x << " " << d_y << "\n";
+                    if (d_x + x < GRID_SIZE && d_x + x>0 && d_y + y < GRID_SIZE && d_y + y>0 && cells[x + d_x][y + d_y] != IS_PREDATOR) {
+                        cells[x + d_x][y + d_y] = IS_PREDATOR;
+                        cells[x][y] = NOT_FILL;
+                        predatorCells[x + d_x][y + d_y] = predatorCells[x][y];
+                    }
+                    if (predatorCells[x][y].possibilityOfReproduction() && predatorCells[x][y].getSex() == FEMALE && predatorCells[x][y].getCntMating() <= MAX_CNT_MATING) {
+
+
                         int d_x = 0;
                         int d_y = 0;
-                        std::pair<int, int> d = bfs(predatorCells, IS_PREDATOR,cells, x, y, predatorCells[x][y].getSex(), d_x, d_y);
+                        std::pair<int, int> d = bfs(predatorCells, IS_PREDATOR, cells, x, y, predatorCells[x][y].getSex(), d_x, d_y);
                         d_x = d.first;
                         d_y = d.second;
                         if (d_x + x < GRID_SIZE && d_x + x>0 && d_y + y < GRID_SIZE && d_y + y>0 && cells[x + d_x][y + d_y] != IS_PREDATOR) {
@@ -250,7 +262,8 @@ void GameOfLife::update() {
                             reproductionPredator(x, y);
                             predatorCells[x][y].increaseMating();
                         }
-                    }
+
+                    }/*
                     else {
                         int d_x = randomDirection();//Здесь мы просто выбираем случайное направление для движеняи и задаем это движение через перезаписывыание в новые клетки текущего живтного
                         int d_y = randomDirection();
@@ -259,7 +272,7 @@ void GameOfLife::update() {
                             cells[x][y] = NOT_FILL;
                             predatorCells[x + d_x][y + d_y] = predatorCells[x][y];
                         }
-                    }
+                    }*/
                     eatingPredator(x, y);
                 }
             }
@@ -308,7 +321,7 @@ void GameOfLife::updateText(int cycleCount) {
     text.setString(std::to_string(cycleCount)); // Устанавливаем текст для отображения количества циклов
     text.setPosition(50, 30);
 }
-int GameOfLife::randomDirection(){
+int GameOfLife::randomDirection() {
     // Создание генератора случайных чисел
     std::random_device rd;
     std::mt19937 gen(rd());
@@ -320,11 +333,11 @@ int GameOfLife::randomDirection(){
 }
 
 bool isValid(int x, int y, int rows, int cols) {
-    return x >= 0 && x < rows&& y >= 0 && y < cols;
+    return x >= 0 && x < rows && y >= 0 && y < cols;
 }
 
 // Функция для выполнения поиска в ширину
-std::pair<int, int> GameOfLife::bfs(std::vector<std::vector<Animal>> animalCells, int typeOfAnimal, std::vector<std::vector<int>> grid, int startX, int startY, int curSex,int & dir_x,int & dir_y) {
+std::pair<int, int> GameOfLife::bfs(std::vector<std::vector<Animal>> animalCells, int typeOfAnimal, std::vector<std::vector<int>> grid, int startX, int startY, int curSex, int& dir_x, int& dir_y) {
     int rows = grid.size();
     int cols = grid[0].size();
 
@@ -332,7 +345,7 @@ std::pair<int, int> GameOfLife::bfs(std::vector<std::vector<Animal>> animalCells
     std::vector<std::vector<bool>> visited(rows, std::vector<bool>(cols, false));
 
     // Очередь для BFS
-    std::queue < std::pair<int,int >> q;
+    std::queue < std::pair<int, int >> q;
 
     // Добавляем начальную клетку в очередь и отмечаем её как посещённую
     q.push(std::make_pair(startX, startY));
@@ -345,7 +358,7 @@ std::pair<int, int> GameOfLife::bfs(std::vector<std::vector<Animal>> animalCells
     // Пока очередь не пуста
     while (!q.empty()) {
         // Извлекаем клетку из очереди
-        std::pair<int,int> current = q.front();
+        std::pair<int, int> current = q.front();
         q.pop();
 
         // Выводим координаты текущей клетки (или делаем что-то другое)
@@ -372,7 +385,7 @@ std::pair<int, int> GameOfLife::bfs(std::vector<std::vector<Animal>> animalCells
                         }
                         if (startY - newY > 0) {
                             dir_y = -1;
-                        }   
+                        }
                         else if (startY - newY < 0) {
                             dir_y = 1;
                         }
@@ -381,6 +394,72 @@ std::pair<int, int> GameOfLife::bfs(std::vector<std::vector<Animal>> animalCells
                         }
                         return std::make_pair(dir_x, dir_y);
                     }
+                }
+                q.push(std::make_pair(newX, newY));
+                visited[newX][newY] = true;
+            }
+        }
+    }
+    return std::make_pair(0, 0);
+}
+
+std::pair<int, int> GameOfLife::find_food(std::vector<std::vector<Animal>> animalCells, int typeOfAnimal, std::vector<std::vector<int>> grid, int startX, int startY, int curSex, int& dir_x, int& dir_y) {
+    int rows = grid.size();
+    int cols = grid[0].size();
+
+    // Массив для отслеживания посещенных клеток
+    std::vector<std::vector<bool>> visited(rows, std::vector<bool>(cols, false));
+
+    // Очередь для BFS
+    std::queue < std::pair<int, int >> q;
+
+    // Добавляем начальную клетку в очередь и отмечаем её как посещённую
+    q.push(std::make_pair(startX, startY));
+    visited[startX][startY] = true;
+
+    // Массив смещений для соседних клеток (вправо, влево, вверх, вниз)
+    int dx[] = { 1, -1, 0, 0 };
+    int dy[] = { 0, 0, 1, -1 };
+
+    // Пока очередь не пуста
+    while (!q.empty()) {
+        // Извлекаем клетку из очереди
+        std::pair<int, int> current = q.front();
+        q.pop();
+
+        // Выводим координаты текущей клетки (или делаем что-то другое)
+        //cout << "Посетили клетку: (" << current.x << ", " << current.y << ")" << endl;
+
+        // Просматриваем соседние клетки
+        for (int i = 0; i < 4; ++i) {
+            int newX = current.first + dx[i];
+            int newY = current.second + dy[i];
+            //std::cout << grid[newX][newY] << "\n";
+            // Проверяем, что новая клетка находится в пределах поля и не посещалась
+            if (isWithinGrid(newX, newY) && !visited[newX][newY]) {
+
+                // Добавляем новую клетку в очередь и отмечаем её как посещённую
+                if (grid[newX][newY] == IS_HERBIVORE) { //Здесь отмечаем кого он будет кушать
+                    if (startX - newX > 0) {
+                        dir_x = -1;
+                    }
+                    else if (startX - newX < 0) {
+                        dir_x = 1;
+                    }
+                    else {
+                        dir_x = 0;
+                    }
+                    if (startY - newY > 0) {
+                        dir_y = -1;
+                    }
+                    else if (startY - newY < 0) {
+                        dir_y = 1;
+                    }
+                    else {
+                        dir_y = 0;
+                    }
+                    return std::make_pair(dir_x, dir_y);
+
                 }
                 q.push(std::make_pair(newX, newY));
                 visited[newX][newY] = true;
