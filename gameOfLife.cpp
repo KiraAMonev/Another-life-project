@@ -47,41 +47,8 @@ void GameOfLife::createHerbivore(int x, int y) {
     herbivoreCells[x][y].setLifeSpan(HERBIVORES_LIFE_SPAN); // Установка жизни травоядного
     herbivoreCells[x][y].setSatiety(HERBIVORE_NORMAL_SATIETY); // Установка сытости травоядного
     herbivoreCells[x][y].setSex(); // Установка пола
+    herbivoreCells[x][y].setCntMating();
 }
-
-
-//void GameOfLife::placeHerbivore() {
-//    herbivoreCells.resize(GRID_SIZE, std::vector<Animal>(GRID_SIZE)); // Изменение размера сетки травоядных
-//    for (int i = 0; i < NUM_HERBIVORE; ++i) { // Цикл начального размещения травоядных
-//        int x = rand() % GRID_SIZE;
-//        int y = rand() % GRID_SIZE;
-//        if (cells[x][y] == NOT_FILL || cells[x][y] == IS_GRASS) { // Если в клетке ничего нет, то занимаем её травоядным
-//            grassCells[x][y].setLifeSpan(0);
-//            cells[x][y] = IS_HERBIVORE; // Ставим флаг, что она занята травоядным
-//            createHerbivore(x, y);
-//        }
-//    }
-//}
-
-
-//void GameOfLife::placeAnimals() {
-//    herbivoreCells.resize(GRID_SIZE, std::vector<Animal>(GRID_SIZE));
-//    predatorCells.resize(GRID_SIZE, std::vector<Animal>(GRID_SIZE));
-//    for (int i = 0; i < NUM_HERBIVORE+NUM_PREDATOR; ++i) { // Цикл начального размещения травоядных
-//        int x = rand() % GRID_SIZE;
-//        int y = rand() % GRID_SIZE;
-//        if (cells[x][y] == NOT_FILL || cells[x][y] == IS_GRASS && i < NUM_HERBIVORE) { // Если в клетке ничего нет, то занимаем её травоядным
-//            grassCells[x][y].setLifeSpan(0);
-//            cells[x][y] = IS_HERBIVORE; // Ставим флаг, что она занята травоядным
-//            createHerbivore(x, y);
-//        }
-//        else if (cells[x][y] == NOT_FILL || cells[x][y] == IS_GRASS && i >= NUM_HERBIVORE) {
-//            grassCells[x][y].setLifeSpan(0);
-//            cells[x][y] = IS_PREDATOR; // Ставим флаг, что она занята травоядным
-//            createPredator(x, y);
-//        }
-//    }
-//}
 
 void GameOfLife::placeAnimals() {
     herbivoreCells.resize(GRID_SIZE, std::vector<Animal>(GRID_SIZE));
@@ -158,6 +125,7 @@ void GameOfLife::createPredator(int x, int y) {
     predatorCells[x][y].setLifeSpan(PREDATOR_LIFE_SPAN);
     predatorCells[x][y].setSatiety(PREDATOR_NORMAL_SATIETY);
     predatorCells[x][y].setSex();
+    predatorCells[x][y].setCntMating();
 }
 
 //void GameOfLife::reproductionPredator(int x, int y) {
@@ -255,7 +223,7 @@ void GameOfLife::update() {
                     cells[x][y] = NOT_FILL;
                 }
                 else {
-                    if (herbivoreCells[x][y].possibilityOfReproduction() && herbivoreCells[x][y].getSex()==FEMALE) {
+                    if (herbivoreCells[x][y].possibilityOfReproduction() && herbivoreCells[x][y].getSex()==FEMALE && herbivoreCells[x][y].getCntMating()<=MAX_CNT_MATING) {
                         int d_x = 0;
                         int d_y = 0;
                         std:: pair<int, int> d = bfs(herbivoreCells, cells, x, y, herbivoreCells[x][y].getSex(), d_x, d_y);
@@ -267,6 +235,7 @@ void GameOfLife::update() {
                             herbivoreCells[x + d_x][y + d_y] = herbivoreCells[x][y];
                         } else if(cells[x + d_x][y + d_y] == IS_HERBIVORE) { 
                             reproductionHerbivore(x, y);
+                            herbivoreCells[x][y].increaseMating();
                         }
                     }
                     else {
@@ -288,7 +257,7 @@ void GameOfLife::update() {
                     cells[x][y] = NOT_FILL;
                 }
                 else {
-                    if (predatorCells[x][y].possibilityOfReproduction() && predatorCells[x][y].getSex()==FEMALE) {
+                    if (predatorCells[x][y].possibilityOfReproduction() && predatorCells[x][y].getSex()==FEMALE && predatorCells[x][y].getCntMating()<=MAX_CNT_MATING) {
                         int d_x = 0;
                         int d_y = 0;
                         std::pair<int, int> d = bfs(predatorCells, cells, x, y, predatorCells[x][y].getSex(), d_x, d_y);
@@ -301,6 +270,7 @@ void GameOfLife::update() {
                         }
                         else if (cells[x + d_x][y + d_y] == IS_PREDATOR) {
                             reproductionPredator(x, y);
+                            predatorCells[x][y].increaseMating();
                         }
                     }
                     else {

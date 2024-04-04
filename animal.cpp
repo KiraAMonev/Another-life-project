@@ -1,6 +1,6 @@
 #include "animal.h"
 #include "gameOfLife.h"
-Animal::Animal() : lifeSpan(0), satiety(0), sex(0) {};
+Animal::Animal() : lifeSpan(0), satiety(0), sex(0), cnt_mating(0){};
 static const int FULL_SATIETY = 100;
 void Animal::setLifeSpan(int lifeSpan) { //установка продолжительности жизни
 	this->lifeSpan = lifeSpan;
@@ -40,6 +40,7 @@ bool Animal::possibilityOfReproduction() const
 	return false;
 }
 
+
 bool Animal::isHungry(int SP) const {
 	if (getSatiety() <= SP) {
 		return true;
@@ -56,4 +57,18 @@ int Animal::randomSex() {
 	// Генерация случайного числа и возвращение его
 	return dis(gen);
 
+}
+
+void Animal::setCntMating()
+{
+	this->cnt_mating = 0;
+}
+
+void Animal::increaseMating() {
+	this->cnt_mating++;
+}
+
+int Animal::getCntMating() const
+{
+	return this->cnt_mating;
 }

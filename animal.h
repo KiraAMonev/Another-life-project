@@ -23,12 +23,15 @@ public:
 	bool isHungry(int SP) const;
 	bool possibilityOfReproduction()const;
 
-
+	void setCntMating();
+	void increaseMating();
+	int getCntMating()const;
 private:
 	int randomSex();
 	int lifeSpan;
 	int satiety;
 	int sex;
+	int cnt_mating;
 };
 
 #endif // !ANIMAL_H
