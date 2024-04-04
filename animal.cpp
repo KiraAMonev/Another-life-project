@@ -45,7 +45,8 @@ bool Animal::isHungry(int SP) const {
 	if (getSatiety() <= SP) {
 		return true;
 	}
-	return false;
+	else
+		return false;
 }
 
 int Animal::randomSex() {

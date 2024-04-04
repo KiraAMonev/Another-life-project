@@ -31,19 +31,19 @@ const int MALE = 0;
 const int FEMALE = 1;
 const int MAX_CNT_MATING = 6;
 
-const int NUM_HERBIVORE = 100; //количество травоядных
+const int NUM_HERBIVORE = 150; //количество травоядных
 const int HERBIVORES_LIFE_SPAN = 20; //продолжительность жизни травоядных
-const int HERBIVORE_NORMAL_SATIETY = 10; //нормальное количество сытости
+const int HERBIVORE_NORMAL_SATIETY = 20; //нормальное количество сытости
 const int HERBIVORE_HUNGRY_SATIETY = 8; //сытость, когда нужно есть траву
 const int HERBIVORE_ADULT_AGE = 8; //"зрелость", то есть возраст, когда можно шпили-вили
 const int HERBIVORE_REDUCING_SATIETY = 1; //сколько очков сытости падает за день
 
-const int NUM_PREDATOR = 50; // Количество хищников
+const int NUM_PREDATOR = 100; // Количество хищников
 const int PREDATOR_LIFE_SPAN = 30; //продолжительность жизни у хищников
-const int PREDATOR_NORMAL_SATIETY = 15; //нормальное количество сытости у хищников
+const int PREDATOR_NORMAL_SATIETY = 20; //нормальное количество сытости у хищников
 const int PREDATOR_HUNGRY_SATIETY = 8; //сытость, когда нужно есть
 const int PREDATOR_ADULT_AGE = 8; //"зрелость", то есть возраст, когда можно шпили-вили
-const int PREDATOR_REDUCING_SATIETY = 2; //сколько очков сытости падает за день
+const int PREDATOR_REDUCING_SATIETY = 1; //сколько очков сытости падает за день
 
 const int GRASS_RESTORING_SATIETY = 1; //сколько восстанавливает травинка
 const int ANIMAL_RESTORING_SATIETY = 6; //сколько восстанавливает поедание животного
@@ -88,7 +88,7 @@ private:
     std::pair<int, int> bfs(std::vector<std::vector<Animal>> herbivoreCells,int typeOfAnimal, std::vector<std::vector<int>> grid, int startX, int startY, int curSex, int& dir_x, int& dir_y);
     int randomDirection(); 
 
-    std::pair<int, int> find_food(std::vector<std::vector<Animal>> herbivoreCells, int typeOfAnimal, std::vector<std::vector<int>> grid, int startX, int startY, int curSex, int& dir_x, int& dir_y);
+    std::pair<int, int> find_food(std::vector<std::vector<Animal>> herbivoreCells, int typeOfAnimal, std::vector<std::vector<int>> grid, int startX, int startY, int food, int& dir_x, int& dir_y);
 
 };
 
