@@ -81,7 +81,7 @@ void GameOfLife::reproductionHerbivore(int x, int y) {
         int n_y = y + dy[i];
         if (isWithinGrid(n_x, n_y)) {
             if (cells[n_x][n_y] == IS_HERBIVORE && herbivoreCells[n_x][n_y].getSex() != herbivoreCells[x][y].getSex() && herbivoreCells[n_x][n_y].possibilityOfReproduction()) {
-                int cnt_baby = rand() % 4;
+                int cnt_baby = rand() % 3;
                 for (int j = 0; j < cnt_baby; j++) {
                     int birth_x = x + (rand() % 3 - 1);//было (rand() % 5 - 2)
                     int birth_y = y + (rand() % 3 - 1);
@@ -205,7 +205,7 @@ void GameOfLife::update() {
                         cells[x][y] = NOT_FILL;
                         herbivoreCells[x + d_x][y + d_y] = herbivoreCells[x][y];
                     }
-                    if (herbivoreCells[x][y].possibilityOfReproduction() && herbivoreCells[x][y].getSex() == FEMALE && herbivoreCells[x][y].getCntMating() <= MAX_CNT_MATING) {
+                    if (herbivoreCells[x][y].possibilityOfReproduction()  && herbivoreCells[x][y].getCntMating() <= MAX_CNT_MATING_HERBIVORES) {
                         int d_x = 0;
                         int d_y = 0;
                         std::pair<int, int> d = bfs(herbivoreCells, IS_HERBIVORE, cells, x, y, herbivoreCells[x][y].getSex(), d_x, d_y);
@@ -243,7 +243,7 @@ void GameOfLife::update() {
                         cells[x][y] = NOT_FILL;
                         predatorCells[x + d_x][y + d_y] = predatorCells[x][y];
                     }
-                    if (predatorCells[x][y].possibilityOfReproduction() && predatorCells[x][y].getSex() == FEMALE && predatorCells[x][y].getCntMating() <= MAX_CNT_MATING) {
+                    if (predatorCells[x][y].possibilityOfReproduction() && predatorCells[x][y].getSex() == FEMALE && predatorCells[x][y].getCntMating() <= MAX_CNT_MATING_PREDATOR) {
 
 
                         int d_x = 0;
